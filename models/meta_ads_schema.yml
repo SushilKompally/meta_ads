@@ -1,0 +1,17 @@
+version: 2
+ 
+sources:
+  - name: meta_ads_bronze
+    database:  '{{ var("source_database_name") }}'
+    schema: bronze        
+    tables:
+      - name: ad
+        identifier: ad
+      - name: campaign
+      - name: ad_set
+      - name: creative
+      - name: insights
+      - name: account
+      - name: country
+      - name: region
+      - name: lead_history
