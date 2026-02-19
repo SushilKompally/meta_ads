@@ -1,0 +1,56 @@
+version: 2
+
+models:
+  - name: country
+    description: >
+      Silver layer table for Meta Ads Countries. Transformed from bronze with standardized
+      naming, safe casting, soft-delete flag, and audit timestamp.
+    config:
+      contract:
+        enforced: true
+
+    columns:
+      - name: ma_country_id
+        description: "Primary key for the Meta Ads Country (from COUNTRYID)."
+        data_type: varchar
+        tests:
+          - not_null
+          - unique
+
+      - name: country_name
+        description: "Country display name (from COUNTRYNAME)."
+        data_type: varchar
+
+      - name: country_code
+        description: "Country ISO-like code (from COUNTRYCODE)."
+        data_type: varchar
+
+      - name: currency
+        description: "Default currency for the country (from CURRENCY)."
+        data_type: varchar
+
+      - name: timezone
+        description: "Representative time zone for the country (from TIMEZONE)."
+        data_type: varchar
+
+      - name: status
+        description: "Lifecycle or availability status for the country (from STATUS)."
+        data_type: varchar
+
+      - name: updated_at
+        description: "Last update timestamp from source (from UPDATEDAT)."
+        data_type: timestamp_ntz
+
+      - name: is_deleted
+        description: "True if STATUS is 'DELETED', else false."
+        data_type: boolean
+        tests:
+          - not_null
+          - accepted_values:
+              values: [true, false]
+
+      - name: silver_load_date
+        description: "Ingestion timestamp for the silver layer."
+        data_type: timestamp_ntz
+        tests:
+          - not_null

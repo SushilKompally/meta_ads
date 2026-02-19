@@ -1,0 +1,48 @@
+version: 2
+
+models:
+  - name: account
+    description: >
+      Silver layer table for Meta Ads account. Incremental merge from bronze,
+      cleaned/standardized fields, and auditing.
+    config:
+      contract:
+        enforced: true
+
+    columns:
+      - name: ma_account_id
+        description: "Primary key for the Meta Ads account (cleaned from accountid)."
+        data_type: varchar
+        tests:
+          - not_null
+          - unique
+
+      - name: account_name
+        description: "Account name (cleaned from accountname)."
+        data_type: varchar
+
+      - name: currency
+        description: "Account currency code."
+        data_type: varchar
+
+      - name: timezone
+        description: "Account time zone."
+        data_type: varchar
+
+      - name: is_deleted
+        description: "True if status is DELETED; otherwise false."
+        data_type: boolean
+        tests:
+          - not_null
+          - accepted_values:
+              values: [true, false]
+
+      - name: updated_at
+        description: "Last update timestamp from source (safe cast)."
+        data_type: timestamp_ntz
+
+      - name: silver_load_date
+        description: "Ingestion timestamp for the silver layer."
+        data_type: timestamp_ntz
+        tests:
+          - not_null

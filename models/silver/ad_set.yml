@@ -1,0 +1,68 @@
+version: 2
+
+models:
+  - name: ad_set
+    description: >
+      Silver layer table for Meta Ads Ad Sets. Transformed from source data with
+      standardized naming, types, and audit columns.
+    config:
+      contract:
+        enforced: true
+
+    columns:
+      - name: ma_ad_set_id
+        description: "Primary key for the Meta Ads Ad Set (from ADSETID)."
+        data_type: varchar
+        tests:
+          - not_null
+          - unique
+
+      - name: ad_set_name
+        description: "Ad Set name (from ADSETNAME)."
+        data_type: varchar
+
+      - name: campaign_id
+        description: "Parent campaign identifier (from CAMPAIGNID)."
+        data_type: varchar
+
+      - name: billing_event
+        description: "Billing event type for the Ad Set (from BILLINGEVENT)."
+        data_type: varchar
+
+      - name: optimization_goal
+        description: "Optimization goal configured for delivery (from OPTIMIZATIONGOAL)."
+        data_type: varchar
+
+      - name: daily_budget
+        description: "Daily budget configured for the Ad Set (from DAILYBUDGET)."
+        data_type: number
+
+      - name: status
+        description: "Current lifecycle status of the Ad Set (from STATUS)."
+        data_type: varchar
+
+      - name: start_time
+        description: "Scheduled start time (from STARTTIME)."
+        data_type: timestamp_ntz
+
+      - name: end_time
+        description: "Scheduled end time (from ENDTIME)."
+        data_type: timestamp_ntz
+
+      - name: updated_at
+        description: "Last update timestamp from source (from UPDATEDAT)."
+        data_type: timestamp_ntz
+
+      - name: is_deleted
+        description: "True if STATUS is 'DELETED', else false."
+        data_type: boolean
+        tests:
+          - not_null
+          - accepted_values:
+              values: [true, false]
+
+      - name: silver_load_date
+        description: "Ingestion timestamp for the silver layer."
+        data_type: timestamp_ntz
+        tests:
+          - not_null

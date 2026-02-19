@@ -5,10 +5,10 @@
   Macro: source_metadata
   Params:
     - tool_name (string): one of ['fivetran', 'stitch', 'stitch_legacy', 'datastream', 'datastream_append_mode']
-    - record_creation_column (string): column/expression representing record creation timestamp (default: 'last_updated')
+    - record_creation_column (string): column/expression representing record creation timestamp (default: 'updated_at')
   
 ------------------------------------------------------------------------------#}
-{% macro source_metadata(tool_name=var('tool_name'), record_creation_column="last_updated") -%}
+{% macro source_metadata(tool_name=var('tool_name'), record_creation_column="updatedat") -%}
 
   {# Normalize and validate tool_name #}
   {% set tool_name_lc = tool_name | lower %}
@@ -22,7 +22,7 @@
 
   {% if tool_name_lc == "fivetran" -%}
     -- Types: tool_name:string='fivetran', record_creation_column:string
-    last_updated AS _source_timestamp,
+    updatedat AS _source_timestamp,
    -- COALESCE(TRY_TO_BOOLEAN(ISDELETED), FALSE) AS is_deleted
 
   {%- elif tool_name_lc == "stitch" -%}

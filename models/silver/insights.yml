@@ -1,0 +1,122 @@
+version: 2
+
+models:
+  - name: insights
+    description: >
+      Silver layer table for Meta Ads daily insights (date x account x campaign x ad_set x ad x region),
+      sourced from bronze.insights. Standardizes metrics, derives soft-delete flag, and adds audit fields.
+    config:
+      contract:
+        enforced: true
+
+    columns:
+      - name: ma_insights_sk
+        description: "Surrogate key for the insights grain (date+account+campaign+ad_set+ad+region)."
+        data_type: varchar
+        tests:
+          - not_null
+          - unique
+
+      - name: ma_date
+        description: "Insights date at daily grain."
+        data_type: date
+        tests:
+          - not_null
+
+      - name: account_id
+        description: "Owning account id (from ACCOUNTID)."
+        data_type: varchar
+        # tests:
+        #   - relationships:
+        #       to: ref('account')
+        #       field: ma_account_id
+
+      - name: campaign_id
+        description: "Campaign id (from CAMPAIGNID)."
+        data_type: varchar
+        # tests:
+        #   - relationships:
+        #       to: ref('campaign')
+        #       field: ma_campaign_id
+
+      - name: ad_set_id
+        description: "Ad Set id (from ADSETID)."
+        data_type: varchar
+        # tests:
+        #   - relationships:
+        #       to: ref('ad_set')
+        #       field: ma_ad_set_id
+
+      - name: ad_id
+        description: "Ad id (from ADID)."
+        data_type: varchar
+        # tests:
+        #   - relationships:
+        #       to: ref('ad')
+        #       field: ma_ad_id
+
+      - name: region_id
+        description: "Region id (from REGIONID)."
+        data_type: varchar
+
+      - name: impressions
+        description: "Number of impressions."
+        data_type: number
+
+      - name: reach
+        description: "Unique users reached."
+        data_type: number
+
+      - name: clicks
+        description: "Total clicks."
+        data_type: number
+
+      - name: ad_clicks
+        description: "Ad-specific clicks (from ADCLICKS)."
+        data_type: number
+
+      - name: cpc
+        description: "Cost per click."
+        data_type: number
+
+      - name: cpm
+        description: "Cost per thousand impressions."
+        data_type: number
+
+      - name: ctr
+        description: "Click-through rate."
+        data_type: number
+
+      - name: spend
+        description: "Ad spend amount."
+        data_type: number
+
+      - name: conversions
+        description: "Total conversions."
+        data_type: number
+
+      - name: purchase_value
+        description: "Total purchase value (from PURCHASEVALUE)."
+        data_type: number
+
+      - name: status
+        description: "Lifecycle/status from source."
+        data_type: varchar
+
+      - name: updated_at
+        description: "Last update timestamp from source (from UPDATEDAT)."
+        data_type: timestamp_ntz
+
+      - name: is_deleted
+        description: "True if STATUS is 'DELETED', else false."
+        data_type: boolean
+        tests:
+          - not_null
+          - accepted_values:
+              values: [true, false]
+
+      - name: silver_load_date
+        description: "Ingestion timestamp for the silver layer."
+        data_type: timestamp_ntz
+        tests:
+          - not_null
