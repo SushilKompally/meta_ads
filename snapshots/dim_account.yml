@@ -1,0 +1,30 @@
+version: 2
+
+snapshots:
+  - name: dim_account
+    description: "SCD Type 2 snapshot for Meta Ads accounts using timestamp strategy on updated_at (fallback to silver_load_date if needed)."
+
+    columns:
+      - name: ma_account_id
+        description: "Natural/business key for the Meta Ads account."
+        data_type: varchar
+
+      - name: account_name
+        description: "Display name of the Meta Ads account from source."
+        data_type: varchar
+
+      - name: currency
+        description: "Account billing currency as provided by Meta Ads."
+        data_type: varchar
+
+      - name: timezone
+        description: "Account timezone setting from source."
+        data_type: varchar
+
+      - name: updated_at
+        description: "Source last modified timestamp used as updated_at for SCD2 (coalesced with silver_load_date when null)."
+        data_type: timestamp_ntz
+
+      - name: silver_load_date
+        description: "ETL pipeline load timestamp into silver layer; also used as fallback for updated_at."
+        data_type: timestamp_ltz

@@ -1,0 +1,42 @@
+version: 2
+
+snapshots:
+  - name: dim_campaign
+    description: "SCD Type 2 snapshot for Meta Ads campaigns using timestamp-based strategy."
+
+    columns:
+      - name: ma_campaign_id
+        description: "Natural/business key for the campaign."
+        data_type: varchar
+
+      - name: campaign_name
+        description: "Name/title of the campaign from Meta Ads."
+        data_type: varchar
+
+      - name: account_id
+        description: "Foreign key referencing the Meta Ads account."
+        data_type: varchar
+
+      - name: status
+        description: "Status of the campaign (ACTIVE, PAUSED, DELETED, etc.)."
+        data_type: varchar
+
+      - name: objective
+        description: "Marketing objective defined for the campaign."
+        data_type: varchar
+
+      - name: start_time
+        description: "Start timestamp of the campaign."
+        data_type: timestamp_ntz
+
+      - name: end_time
+        description: "End timestamp of the campaign."
+        data_type: timestamp_ntz
+
+      - name: updated_at
+        description: "Last modified timestamp used for SCD2 tracking (coalesced with silver_load_date)."
+        data_type: timestamp_ntz
+
+      - name: silver_load_date
+        description: "Timestamp when the record was loaded into the silver layer."
+        data_type: timestamp_ltz

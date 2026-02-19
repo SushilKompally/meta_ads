@@ -1,0 +1,30 @@
+version: 2
+
+snapshots:
+  - name: dim_region
+    description: "SCD Type 2 snapshot for Meta Ads regions using timestamp-based strategy."
+
+    columns:
+      - name: ma_region_id
+        description: "Natural/business key for the region."
+        data_type: varchar
+
+      - name: region_name
+        description: "Region name (e.g., North America, APAC)."
+        data_type: varchar
+
+      - name: region_code
+        description: "Region code assigned by Meta Ads."
+        data_type: varchar
+
+      - name: country_id
+        description: "Foreign key referencing the country table."
+        data_type: varchar
+
+      - name: updated_at
+        description: "Source last modified timestamp used for SCD2 tracking."
+        data_type: timestamp_ntz
+
+      - name: silver_load_date
+        description: "Timestamp when data was loaded into the Silver layer."
+        data_type: timestamp_ltz

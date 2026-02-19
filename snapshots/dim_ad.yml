@@ -1,0 +1,50 @@
+version: 2
+
+snapshots:
+  - name: dim_ad
+    description: "SCD Type 2 snapshot for Meta Ads Ad Sets using timestamp strategy."
+
+    columns:
+      - name: ma_ad_set_id
+        description: "Natural/business key for the ad set."
+        data_type: varchar
+
+      - name: ad_set_name
+        description: "Name of the ad set from Meta Ads."
+        data_type: varchar
+
+      - name: campaign_id
+        description: "Foreign key linking ad set to campaign."
+        data_type: varchar
+
+      - name: billing_event
+        description: "Billing event type defined in Meta Ads (e.g., IMPRESSIONS, CLICKS)."
+        data_type: varchar
+
+      - name: optimization_goal
+        description: "Optimization goal for delivery (e.g., REACH, LEADS)."
+        data_type: varchar
+
+      - name: daily_budget
+        description: "Daily budget set for the ad set."
+        data_type: number
+
+      - name: start_time
+        description: "Start date-time of the ad set."
+        data_type: timestamp_ntz
+
+      - name: end_time
+        description: "End date-time of the ad set."
+        data_type: timestamp_ntz
+
+      - name: status
+        description: "Status of the ad set in Meta Ads."
+        data_type: varchar
+
+      - name: updated_at
+        description: "Last modified timestamp used for SCD2 tracking (coalesced with silver_load_date)."
+        data_type: timestamp_ntz
+
+      - name: silver_load_date
+        description: "Timestamp when data was ingested into the Silver layer."
+        data_type: timestamp_ltz
