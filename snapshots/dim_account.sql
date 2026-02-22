@@ -1,11 +1,11 @@
 {% snapshot dim_account %}
 {{
     config(
-        unique_key="ma_account_id",
-        strategy="timestamp",
-        updated_at="updated_at",
-        pre_hook="{{ log_model_audit(status='started') }}",
-        post_hook="{{ log_model_audit(status='success') }}"
+        unique_key = "ma_account_id",
+        strategy   = "timestamp",
+        updated_at = "updated_at",
+        pre_hook  = "{{ log_model_audit(status='started') }}",
+        post_hook = "{{ log_model_audit(status='success') }}"
     )
 }}
 
@@ -18,11 +18,12 @@ select
     currency,
     timezone,
 
-    -- audit fields from source
+    -- audit fields
     silver_load_date,
-    -- ensure movement even if source updated_at is occasionally null
+
+    -- timestamp used by the timestamp strategy
     coalesce(updated_at, silver_load_date) as updated_at
 
-from {{ ref("account") }}
+from {{ ref('account') }}
 
 {% endsnapshot %}

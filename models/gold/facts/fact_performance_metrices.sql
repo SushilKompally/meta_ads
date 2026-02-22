@@ -44,16 +44,16 @@ with final as (
 
   from {{ ref('insights') }} i
   -- Ensure referential integrity by joining only to current dim rows
-  inner join {{ ref('dim_account') }}  da
-    on da.ma_account_id  = i.account_id  and da.is_current = true
-  inner join {{ ref('dim_campaign') }} dc
-    on dc.ma_campaign_id = i.campaign_id and dc.is_current = true
+  inner join  {{ ref('dim_account') }}  da
+    on da.ma_account_id  = i.account_id  
+  inner join  {{ ref('dim_campaign') }} dc
+    on dc.ma_campaign_id = i.campaign_id 
   inner join {{ ref('dim_ad_set') }}   das
-    on das.ma_ad_set_id   = i.ad_set_id  and das.is_current = true
+    on das.ma_ad_set_id   = i.ad_set_id  
   inner join {{ ref('dim_ad') }}       d_ad
-    on d_ad.ma_ad_id      = i.ad_id      and d_ad.is_current = true
+    on d_ad.ma_ad_id      = i.ad_id      
   inner join {{ ref('dim_region') }}   dr
-    on dr.ma_region_id    = i.region_id  and dr.is_current = true
+    on dr.ma_region_id    = i.region_id  
 
   {% if is_incremental() %}
     -- process only new/updated insight rows beyond the target watermark

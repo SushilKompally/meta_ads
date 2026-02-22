@@ -1,7 +1,7 @@
 version: 2
  
 sources:
-  - name: meta_ads
+  - name: meta_ads_bronze
     database:  '{{ var("source_database_name") }}'
     schema: bronze        
     tables:

@@ -22,7 +22,7 @@ with raw as (
   select
     *,
     {{ source_metadata() }}
-  from {{ source('meta_ads', 'creative') }}   -- adjust to your declared source/table if different
+  from {{ source('meta_ads_bronze', 'creative') }}   -- adjust to your declared source/table if different
   where 1=1
   {{ incremental_filter() }}
 ),
@@ -42,7 +42,7 @@ cleaned as (
     {{ clean_string('status') }}         as status,
 
     -- ========= DATES/TIMES =========
-    {{ safe_timestamp('updatedat') }}    as updated_at,
+    {{ safe_date('updatedat') }}    as updated_at,
 
     -- ========= FLAGS =========
     case when {{ clean_string('status') }} = 'DELETED' then true else false end as is_deleted,
