@@ -23,8 +23,10 @@ select
 
     -- audit fields
     silver_load_date,
+
+    -- the timestamp used by the timestamp strategy
     coalesce(updated_at, silver_load_date) as updated_at
 
-from {{ ref("campaign") }}
+from {{ ref('campaign') }}
 
 {% endsnapshot %}

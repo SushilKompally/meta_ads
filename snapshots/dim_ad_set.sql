@@ -27,6 +27,6 @@ select
     silver_load_date,
     coalesce(updated_at, silver_load_date) as updated_at
 
-from {{ ref("ad") }}
+from {{ ref("ad_set") }}
 
 {% endsnapshot %}

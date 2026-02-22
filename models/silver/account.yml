@@ -39,7 +39,7 @@ models:
 
       - name: updated_at
         description: "Last update timestamp from source (safe cast)."
-        data_type: timestamp_ntz
+        data_type: date
 
       - name: silver_load_date
         description: "Ingestion timestamp for the silver layer."

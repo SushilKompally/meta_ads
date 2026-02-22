@@ -23,7 +23,7 @@ with raw as (
   select
     *,
     {{ source_metadata() }}
-  from {{ source('meta_ads', 'account') }}   -- change to your declared source if needed
+  from {{ source('meta_ads_bronze', 'account') }}   -- change to your declared source if needed
   where 1=1
   {{ incremental_filter() }}
 

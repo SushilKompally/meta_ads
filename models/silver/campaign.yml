@@ -40,15 +40,15 @@ models:
 
       - name: start_time
         description: "Scheduled start time (from STARTTIME)."
-        data_type: timestamp_ntz
+        data_type: date
 
       - name: end_time
         description: "Scheduled end time (from ENDTIME)."
-        data_type: timestamp_ntz
+        data_type: date
 
       - name: updated_at
         description: "Last update timestamp from source (from UPDATEDAT)."
-        data_type: timestamp_ntz
+        data_type: date
 
       - name: is_deleted
         description: "True if STATUS is 'DELETED', else false."

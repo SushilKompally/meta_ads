@@ -22,7 +22,7 @@ with raw as (
   select
     *,
     {{ source_metadata() }}
-  from {{ source('meta_ads', 'insights') }}   -- << using insights table
+  from {{ source('meta_ads_bronze', 'insights') }}
   where 1=1
   {{ incremental_filter() }}
 ),
@@ -30,41 +30,40 @@ with raw as (
 cleaned as (
   select
     -- ========== GRAIN / KEYS ==========
-    /* Normalize date to DATE */
-    to_date({{ safe_date('date') }})                    as ma_date,
+    {{ safe_date('date') }}                         as ma_date,
 
-    {{ clean_string('accountid') }}                          as account_id,
-    {{ clean_string('campaignid') }}                         as campaign_id,
-    {{ clean_string('adsetid') }}                            as ad_set_id,
-    {{ clean_string('adid') }}                               as ad_id,
-    {{ clean_string('regionid') }}                           as region_id,
+    {{ clean_string('accountid') }}                 as account_id,
+    {{ clean_string('campaignid') }}                as campaign_id,
+    {{ clean_string('adsetid') }}                   as ad_set_id,
+    {{ clean_string('adid') }}                      as ad_id,
+    {{ clean_string('regionid') }}                  as region_id,
 
-    -- Surrogate key (daily grain x account x campaign x adset x ad x region)
+    -- Surrogate key (include date for daily grain)
     {{ dbt_utils.generate_surrogate_key([
-    "accountid","campaignid","adsetid","adid","regionid"
-    ]) }}                                                    as ma_insights_sk,
+      "date","accountid","campaignid","adsetid","adid","regionid"
+    ]) }}                                           as ma_insights_sk,
 
     -- ========== METRICS ==========
-    {{ safe_number('impressions') }}                         as impressions,
-    {{ safe_number('reach') }}                               as reach,
-    {{ safe_number('clicks') }}                              as clicks,
-    {{ safe_number('adclicks') }}                            as ad_clicks,
-    {{ safe_number('cpc') }}                                 as cpc,
-    {{ safe_number('cpm') }}                                 as cpm,
-    {{ safe_number('ctr') }}                                 as ctr,
-    {{ safe_number('spend') }}                               as spend,
-    {{ safe_number('conversions') }}                         as conversions,
-    {{ safe_number('purchasevalue') }}                       as purchase_value,
+    impressions                                     as impressions,
+    reach                                           as reach,
+    clicks                                          as clicks,
+    adclicks                                        as ad_clicks,
+    cpc                                             as cpc,
+    cpm                                             as cpm,
+    ctr                                             as ctr,
+    spend                                           as spend,
+    conversions                                     as conversions,
+    purchasevalue                                   as purchase_value,
 
     -- ========== STATUS / DATES ==========
-    {{ clean_string('status') }}                             as status,
-    {{ safe_date('updatedat') }}                        as updated_at,
+    {{ clean_string('status') }}                    as status,
+    {{ safe_date('updatedat') }}                    as updated_at,
 
     -- ========== FLAGS ==========
-    case when {{ clean_string('status') }} = 'DELETED' then true else false end as is_deleted,
+    case when upper({{ clean_string('status') }}) = 'DELETED' then true else false end as is_deleted,
 
     -- ========== AUDIT ==========
-    current_timestamp()::timestamp_ntz                       as silver_load_date
+    current_timestamp()::timestamp_ntz              as silver_load_date
 
   from raw
 ),

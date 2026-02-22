@@ -22,7 +22,7 @@ with raw as (
   select
     *,
     {{ source_metadata() }}
-  from {{ source('meta_ads', 'campaign') }}   -- adjust to your declared source/table if different
+  from {{ source('meta_ads_bronze', 'campaign') }}   -- adjust to your declared source/table if different
   where 1=1
   {{ incremental_filter() }}
 ),
@@ -39,9 +39,9 @@ cleaned as (
     {{ clean_string('objective') }}      as objective,
 
     -- ========= DATES/TIMES =========
-    {{ safe_timestamp('starttime') }}    as start_time,
-    {{ safe_timestamp('endtime') }}      as end_time,
-    {{ safe_timestamp('updatedat') }}    as updated_at,
+    {{ safe_date('starttime') }}    as start_time,
+    {{ safe_date('endtime') }}      as end_time,
+    {{ safe_date('updatedat') }}    as updated_at,
 
     -- ========= FLAGS =========
     case when {{ clean_string('status') }} = 'DELETED' then true else false end as is_deleted,
