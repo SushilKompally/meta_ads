@@ -62,26 +62,24 @@ vars:
 
 models:
   meta_ads:
-    meta_ads:
-      silver:
-        +database:  "{{ env_var('DBT_meta_ads', 'DATA_PLATFORM_DB') }}"
-        +schema: "{{ env_var('DBT_SILVER_SCHEMA', 'SILVER_META_ADS') }}"
-        +materialized: "incremental"
-        +on_schema_change: append_new_columns
+    silver:
+      +database:  "{{ env_var('DBT_meta_ads', 'DATA_PLATFORM_DB') }}"
+      +schema: "{{ env_var('DBT_SILVER_SCHEMA', 'SILVER_META_ADS') }}"
+      +materialized: "incremental"
+      +on_schema_change: append_new_columns
+      
         
-        
-      gold:
-        +database:  "{{ env_var('DBT_meta_ads', 'DATA_PLATFORM_DB') }}"
-        +schema: "{{ env_var('DBT_GOLD_SCHEMA', 'GOLD_META_ADS') }}"
-        +materialized: "incremental"
-        +on_schema_change: append_new_columns
+    gold:
+      +database:  "{{ env_var('DBT_meta_ads', 'DATA_PLATFORM_DB') }}"
+      +schema: "{{ env_var('DBT_GOLD_SCHEMA', 'GOLD_META_ADS') }}"
+      +materialized: "incremental"
+      +on_schema_change: append_new_columns
         
    
 snapshots:
-  meta_ads:
     meta_ads:
       +target_database: "{{ env_var('DBT_meta_ads', 'DATA_PLATFORM_DB') }}"
-      +target_schema: "{{ env_var('DBT_SNAPSHOT_SCHEMA', 'SNAPSHOT_META_ADS') }}"
+      +target_schema: "{{ env_var('DBT_SNAPSHOT_SCHEMA', 'META_ADS_SNAPSHOTS') }}"
       +strategy: timestamp
       +invalidate_hard_deletes: true
    
